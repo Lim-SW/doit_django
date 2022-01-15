@@ -43,7 +43,7 @@
                             <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
                             <!-- file -->
                             {% if post.file_upload %}
-                                <div style='float: right;'><a href="{{ post.file_upload.url }}">
+                                <div style='float: right;'><a href="{{ post.file_upload.url }}" download="True">
                                     <button type="button" class="btn btn-outline-primary"><i class="far fa-save"></i> Download : {{ post.get_file_name }}</button></a></div>
                             {% endif %}
                             <!-- Author -->
