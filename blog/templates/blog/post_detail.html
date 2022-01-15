@@ -41,6 +41,10 @@
                         <header class="mb-4">
                             <!-- Post title-->
                             <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+                            <!-- hook -->
+                            {% if post.hook_text %}
+                                <h5 class="text-muted">{{ post.hook_text }}</h5>
+                            {% endif %}
                             <!-- file -->
                             {% if post.file_upload %}
                                 <div style='float: right;'><a href="{{ post.file_upload.url }}" download="True">
