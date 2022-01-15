@@ -9,6 +9,7 @@
         <title>{{ post.title }} - SW_Lim BLOG</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <script src="https://kit.fontawesome.com/19e65124f0.js" crossorigin="anonymous"></script>
         <!-- Core theme CSS (includes Bootstrap)-->
         <link rel="stylesheet" href="{% static 'blog/bootstrap/bootstrap.min.css' %}" media="screen">
         <link rel="stylesheet" href="{% static 'blog/css/blog-post.css' %}" media="screen">
@@ -40,6 +41,11 @@
                         <header class="mb-4">
                             <!-- Post title-->
                             <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+                            <!-- file -->
+                            {% if post.file_upload %}
+                                <div style='float: right;'><a href="{{ post.file_upload.url }}">
+                                    <button type="button" class="btn btn-outline-primary"><i class="far fa-save"></i> Download : {{ post.get_file_name }}</button></a></div>
+                            {% endif %}
                             <!-- Author -->
                             <p class="lead">by <a href="#">작성자 LSW</a></p>
                             <!-- Post meta content-->
@@ -49,7 +55,12 @@
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
                         </header>
                         <!-- Preview image figure-->
+                        {% if post.head_image %}
                         <figure class="mb-4"><img class="img-fluid rounded" src="{{ post.head_image.url }}" alt="..." /></figure>
+                        {% else %}
+                        <!--<img class="card-img-top" src="/static/img/no_image.png" alt="Card image cap">-->
+                        <img class="card-img-top" src="https://picsum.photos/seed/{{ post.id }}/800/600" alt="random">
+                        {% endif %}
                         <!-- Post content-->
                         <section class="mb-5">
                             <p class="fs-5 mb-4">{{ post.content }}</p>
