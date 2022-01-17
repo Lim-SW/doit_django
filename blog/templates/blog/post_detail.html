@@ -4,6 +4,11 @@
                     <article>
                         <!-- Post header-->
                     <div id="post-area">
+                        {% if p.category %}
+                            <span class="badge badge-secondary float-light text-black">{{ p.category }}</span>
+                        {% else %}
+                            <span class="badge badge-secondary float-light text-black">미분류</span>
+                        {% endif %}
                         <header class="mb-4">
                             <!-- Post title-->
                             <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
@@ -17,7 +22,7 @@
                                     <button type="button" class="btn btn-outline-primary"><i class="far fa-save"></i> Download : {{ post.get_file_name }}</button></a></div>
                             {% endif %}
                             <!-- Author -->
-                            <p class="lead">by <a href="#">작성자 LSW</a></p>
+                            <p class="lead">by <a href="#">{{ post.author }}</a></p>
                             <!-- Post meta content-->
                             <div class="text-muted fst-italic mb-2">{{ post.created_at }}</div>
                             <!-- Post categories-->
