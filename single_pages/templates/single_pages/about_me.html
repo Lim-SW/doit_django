@@ -1,20 +1,8 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>SW_Lim About me</title>
-</head>
-<body>
-<nav>
-    <a href="/">MAIN</a>
-    <a href="/about_me/">ABOUT ME</a>
-    <a href="/blog/">BLOG</a>
-</nav>
+{% extends 'blog/base_full_width.html' %}
 
+{% block main_area %}
 <div style="text-align: center"><img src="/static/img/ggyou.png" alt="콩떡원"></div>
 <div style="text-align: center"><H1>어바웃 미 공사중입니다.</H1></div>
 <div style="text-align: center"><h2>대신 귀여운 콩떡원을 드리겠습니다.</h2></div>
+{% endblock %}
 
-</body>
-</html>
