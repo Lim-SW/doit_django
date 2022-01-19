@@ -1,6 +1,9 @@
     {% extends 'blog/base.html' %}
     {% block main_area %}
-                <h1>Blog {% if category %}<span class="badge bg-secondary">{{ category }}</span>{% endif %}</h1>
+                <h1>Blog
+                    {% if tag %}<span class="badge rounded-pill bg-secondary"><i class="fas fa-tags"></i>{{ tag }}({{ tag.post_set.count }})</span>{% endif %}
+                    {% if category %}<span class="badge bg-secondary">{{ category }}</span>{% endif %}
+                </h1>
                 {% if post_list.exists %}
                     {% for p in post_list %}
                     <!-- Blog Post -->
@@ -22,6 +25,14 @@
                                 <h5 class="text-muted">{{ p.hook_text }}</h5>
                             {% endif %}
                             <p class="card-text">{{ p.content | truncatewords:30 }}</p>
+                            {% if p.tags.exists %}
+                                <i class="fas fa-tags"></i>
+                                {% for tag in p.tags.iterator %}
+                                    <a href="{{ tag.get_absolute_url }}"><span class="badge rounded-pill bg-secondary">{{ tag }}</span></a>
+                                {% endfor %}
+                                <br/>
+                                <br/>
+                            {% endif %}
                             <a href="{{ p.get_absolute_url }}" class="btn btn-primary">Read More &rarr;</a>
                             {% if p.file_upload %}
                                 <div style='float: right;'><a href="{{ p.file_upload.url}}" download="True">
