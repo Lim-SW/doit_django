@@ -1,7 +1,9 @@
     {% extends 'blog/base.html' %}
+    {% load crispy_forms_tags %}
+
     {% block main_area %}
                     <!-- Post content-->
-                    <article>
+        <article xmlns="http://www.w3.org/1999/html">
                         <!-- Post header-->
                     <div id="post-area">
                         <header class="mb-4">
@@ -53,49 +55,51 @@
                         {% endif %}
                     </div>
                     </article>
+
+
                     <div id="comment-area">
                     <!-- Comments section-->
                     <section class="mb-5">
                         <div class="card bg-light">
+                        <h5 class="card-header">Leave a Comment : </h5>
                             <div class="card-body">
                                 <!-- Comment form-->
-                                <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
-                                <!-- Comment with nested comments-->
-                                <div class="d-flex mb-4">
-                                    <!-- Parent comment-->
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">Commenter Name</div>
-                                        If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
-                                        <!-- Child comment 1-->
-                                        <div class="d-flex mt-4">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                            <div class="ms-3">
-                                                <div class="fw-bold">Commenter Name</div>
-                                                And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
-                                            </div>
+                                {% if user.is_authenticated %}
+                                    <form id="comment-form" method="POST" action="{{ post.get_absolute_url }}new_comment/">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                        {{ comment_form | crispy}}
+                                        <!--<textarea class="mb-3 form-control" rows="3" placeholder="댓글을 남겨주세요."></textarea>-->
                                         </div>
-                                        <!-- Child comment 2-->
-                                        <div class="d-flex mt-4">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                            <div class="ms-3">
-                                                <div class="fw-bold">Commenter Name</div>
-                                                When you put money directly to a problem, it makes a good headline.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Single comment-->
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">Commenter Name</div>
-                                        When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
-                                    </div>
-                                </div>
+                                        <button type="submit" class="btn btn-primary float-end mt-2">댓글작성</button>
+                                    </form>
+                                {% else %}
+                                    <a role="button" class="btn btn-outline-dark btn-block btn-toolbar justify-content-center" href="#" data-toggle="modal" data-target="#loginModal">로그인 후 댓글을 작성하실수 있습니다.</a>
+                                {% endif %}
                             </div>
                         </div>
+
+                        {% if post.comment_set.exists %}
+                            {% for comment in post.comment_set.iterator %}
+                                <div class="dropdown mt-4" style="float: right">
+                                    <button class="dropbtn btn btn-primary"><i class="fas fa-caret-down"></i></button>
+                                    <div class="dropdown-content">
+                                      <a href="#">수정</a>
+                                      <a href="#">삭제</a>
+                                    </div>
+                                    </div>
+                                <div class="d-flex m-3">
+                                    <div class="m-3 flex-shrink-0"><img class="rounded-circle" src="http://placehold.it/50x50" alt="" width="60px"/></div>
+                                    <div class="mt-3">
+                                    <div class="fw-bold">{{ comment.author.username }} &nbsp;&nbsp;<small class="text-muted">{{ comment.created_at }}</small>
+                                  </div>
+                                    {{ comment.content | linebreaks }}
+                                </div>
+                                </div>
+                                <hr style="border: none; border-top: solid gray; color: #fff; background-color: #fff; height: 1px; width: 100%">
+                            {% endfor %}
+                        {% endif %}
                     </section>
                     </div>
-
+                    </hr>
     {% endblock %}
