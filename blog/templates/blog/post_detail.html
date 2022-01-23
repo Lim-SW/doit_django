@@ -81,13 +81,34 @@
 
                         {% if post.comment_set.exists %}
                             {% for comment in post.comment_set.iterator %}
-                                <div class="dropdown mt-4" style="float: right">
+                                {% if user.is_authenticated and comment.author == user %}
+                                <div class="dropdown mt-4" style="float: right" id="comment-{{ comment.pk }}-update-btn">
                                     <button class="dropbtn btn btn-primary"><i class="fas fa-caret-down"></i></button>
                                     <div class="dropdown-content">
-                                      <a href="#">수정</a>
-                                      <a href="#">삭제</a>
+                                      <a href="/blog/update_comment/{{ comment.pk }}/">수정</a>
+                                      <a role="button" href="#" id="comment-{{ comment.pk }}-delete-modal-btn" data-toggle="modal" data-target="#deleteCommentModal-{{ comment.pk }}">삭제</a>
                                     </div>
                                     </div>
+                                    <div class="modal fade" id="deleteCommentModal-{{ comment.pk }}" tabindex="-1" role="alertdialog" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">정말 삭제하시겠습니까?</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <del>{{ comment | linebreaks }}</del>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a role="button" class="btn btn-danger" href="/blog/delete_comment/{{ comment.pk }}/">삭제</a>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                {% endif %}
                                 <div class="d-flex m-3">
                                     <div class="m-3 flex-shrink-0"><img class="rounded-circle" src="http://placehold.it/50x50" alt="" width="60px"/></div>
                                     <div class="mt-3">
@@ -96,6 +117,9 @@
                                     {{ comment.content | linebreaks }}
                                 </div>
                                 </div>
+                                {% if comment.created_at != comment.modified_at %}
+                                    <p class="text-muted float-end"><small>Updated: {{ comment.modified_at }}</small></p>
+                                {% endif %}
                                 <hr style="border: none; border-top: solid gray; color: #fff; background-color: #fff; height: 1px; width: 100%">
                             {% endfor %}
                         {% endif %}
