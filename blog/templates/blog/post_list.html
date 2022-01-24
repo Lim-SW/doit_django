@@ -7,6 +7,7 @@
             {% endif %}
         {% endif %}
                 <h1>Blog
+                    {% if search_info %}<small class="text-muted">{{ search_info }}</small>{% endif %}
                     {% if tag %}<span class="badge rounded-pill bg-secondary"><i class="fas fa-tags"></i>{{ tag }}({{ tag.post_set.count }})</span>{% endif %}
                     {% if category %}<span class="badge bg-secondary">{{ category }}</span>{% endif %}
                 </h1>
@@ -56,12 +57,27 @@
                 {% endif %}
 
                 <!-- Pagination -->
+                {% if is_paginated %}
                 <ul class="pagination justify-content-center mb-4">
+                    {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="#">&larr; Older</a>
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&larr; Newer</a>
                     </li>
+                    {% else %}
                     <li class="page-item disabled">
-                        <a class="page-link" href="#">Newer &rarr;</a>
+                        <a class="page-link" href="#">&larr; Newer</a>
                     </li>
+                    {% endif %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Older &rarr;</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Older &rarr;</a>
+                    </li>
+                    {% endif %}
                 </ul>
+                {% endif %}
     {% endblock %}
